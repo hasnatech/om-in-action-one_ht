@@ -1,0 +1,274 @@
+<!-- <drag-scroll style="height: 100vh">  -->
+<div class="flex top-panel">
+  <div class="flex-1">
+
+    <div class="title">Order Management In Action</div>
+    <div class="progress">
+      <div class="thumb" [style.width]=" ((quizNo / totalQuestion) * 100) + '%'"></div>
+    </div>
+    <div class="text-center">
+      Question {{quizNo}} / {{totalQuestion}}
+    </div>
+  </div>
+  <div class="score-panel">
+    <div class="title">Your Score</div>
+    <div class="score">{{score}}</div>
+    <div class="flex fcenter">
+      <div class="batch">
+        <img *ngIf="batches > 0" src="assets/batches.png" alt="Batches">
+        <img *ngIf="batches > 1" src="assets/batches.png" alt="Batches">
+      </div>
+    </div>
+  </div>
+</div>
+<div id="game" class="game" #game>
+
+  <div class="game_layout abs"><img src="assets/game.png" alt="game"></div>
+
+  <div class="screen_10 abs"><img src="assets/10_screen.png" alt="game"></div>
+
+  <div class="screen_10_1 abs"><img src="assets/10_screen_1.png" alt="game"></div>
+
+  <div id="batch" class="abs"><img src="assets/batches.png" alt="batch"></div>
+  <div id="questNoAdd" class="abs">+1</div>
+
+
+  <div id="earn_batch1" class="abs"><img src="assets/earn_batch.png" alt="Earn a Batch"></div>
+
+  <div id="earn_batch2" class="abs"><img src="assets/earn_batch.png" alt="Earn a Batch"></div>
+
+  <div id="truck1" class="Truck1 abs"><img src="assets/Truck1.png" alt="Truck1"></div>
+  <div id="truck2" class="Truck2 abs"><img src="assets/Truck2.png" alt="Truck2"></div>
+  <div id="truck3" class="Truck3 abs"><img src="assets/Truck3.png" alt="Truck2"></div>
+
+
+</div>
+
+<div id="quiz" class="quiz flex fcenter" *ngIf="showPanel">
+  <!-- <div class="instructor" *ngIf="showQuizScreen == 'intro'">
+    <img src="assets/man.png" alt="Man">
+  </div> -->
+  <div class="panel {{selectedQuiz.type}}">
+    <div class="flex fcenter">
+      <div class="instructor" *ngIf="showQuizScreen == 'intro'">
+        <img src="assets/customer_service.png" alt="Man">
+        <div class="text-center">
+          <p>Customer Service Representative</p>
+        </div>
+      </div>
+      <div class="intro" *ngIf="showQuizScreen == 'intro'">
+        <h2>Welcome!</h2>
+        <p>Welcome to the <b>Order Management in Action</b> game. In this game, go through the Order Management process as a Customer Service Representative.</p>
+
+        <p>You will be given several scenarios that correspond to the eight core process groups of Order Management. In each, choose the ideal way to serve customers while achieving mutually winning outcomes. </p>
+
+        <p>Remember to <i>Think Forward</i>, considering how Customer Service will evolve to keep up with our customer’s expectations.  </p>
+
+        <p>Select <b>Next</b> to learn more about the game.</p>
+
+        <div class="">
+          <button class="primary-btn" (click)="this.showQuizScreen = 'rule'">Next</button>
+        </div>
+      </div>
+    </div>
+    <div class="rule" *ngIf="showQuizScreen == 'rule'">
+      <h2>About the Game </h2>
+      <ul>
+        <li>Each question is worth 100 points.</li>
+        <li>You can attempt each question only once.</li>
+        <li>You need to score at least 800 points to win.</li>
+      </ul>
+      <p><b>Look out!</b> 
+        <!-- <img src="assets/question_mark.png" alt="Question Mark">  -->
+        There are some bonus <i>Proactive Behavior</i> questions. Answer these correctly and earn bonus
+        badges.</p>
+
+      <p>Select Start to begin.</p>
+
+      <div class="">
+        <button class="primary-btn" (click)="action(1)">Start</button>
+      </div>
+
+    </div>
+
+    <div id="miles" *ngIf="showQuizScreen == 'miles'">
+      <h2>10 Miles to Go </h2>
+      <p>Good job! You have successfully achieved all the milestones in Order Management. However, we are not quite
+        there yet. There are 10 miles to go for the delivery to reach the customer. 
+        Answer the next two questions and win the opportunity to earn 200 extra points and win the game.    
+      </p>
+      <div class="text-center">
+        <button class="primary-btn" (click)="getQuiz(11)">Continue</button>
+      </div>
+    </div>
+
+    <div class="quiz-panel" *ngIf="showQuizScreen == 'quiz'">
+      <div class="question" *ngIf="selectedQuiz.submitted != true">
+        <div class="flex">
+          <div class="flex-1">
+            <div class="title">
+              <h2>{{selectedQuiz.title}}</h2>
+            </div>
+
+            <div class="text" [innerHTML]="selectedQuiz.question">
+
+            </div>
+            <div class="instr">
+              {{selectedQuiz.instr}}
+            </div>
+
+            <div class="choices" *ngIf="selectedQuiz.type == 'single_choice'">
+              <div *ngFor="let item of selectedQuiz.choices; let i = index">
+                <div class="flex choice" (click)="selectedQuiz.selected = i; selectedQuiz.choosen = true">
+                  <div class="single-choice">
+                    <div class="dot" [ngClass]="{'active' : selectedQuiz.selected == i}"></div>
+                  </div>
+                  <div class="text">
+                    <!-- {{alpha[i]}}. {{item.text}} -->
+                    {{item.text}}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- <div class="sorting" *ngIf="selectedQuiz.type == 'sort_order'" cdkDropList
+              (cdkDropListDropped)="drop($event)">
+              <div *ngFor="let item of selectedQuiz.choices; let i = index" cdkDrag>
+                <div class="flex choice">
+                  <div class="label">
+                    {{item}}
+                  </div> 
+                  <div class="text">
+                    {{item}}
+                  </div>
+                </div>
+              </div>
+            </div> -->
+            <div class="sorting" *ngIf="selectedQuiz.type == 'sort_order'" cdkDropList
+              (cdkDropListDropped)="drop($event)">
+              <div class="flex">
+                <div class="mr-20">
+                  <h3>Drag Item</h3>
+                  <div class="dd_choice" cdkDropList #dragList="cdkDropList" [cdkDropListData]="drag"
+                    [cdkDropListConnectedTo]="[todoList, doneList]" (cdkDropListDropped)="drop($event)">
+                    <div class="choice" *ngFor="let item of drag; let i = index" cdkDrag>
+                      {{item}}
+                    </div>
+                  </div>
+                </div>
+                <div class="mr-20">
+                  <h3>{{selectedQuiz.sorting1_title}}</h3>
+                  <div class="dd_choice" cdkDropList #todoList="cdkDropList" [cdkDropListData]="todo"
+                    [cdkDropListConnectedTo]="[dragList, doneList]" (cdkDropListDropped)="drop($event)">
+                    <div class="choice" *ngFor="let item of todo; let i = index" cdkDrag>
+                      {{item}}
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <h3>{{selectedQuiz.sorting2_title}}</h3>
+                  <div class="dd_choice" cdkDropList #doneList="cdkDropList" [cdkDropListData]="done"
+                    [cdkDropListConnectedTo]="[dragList, todoList]" (cdkDropListDropped)="drop($event)">
+                    <div class=" choice" *ngFor="let item of done; let i = index" cdkDrag>
+                      {{item}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="choices" *ngIf="selectedQuiz.type == 'multiple_choice'">
+              <div *ngFor="let item of selectedQuiz.choices; let i = index">
+                <div class="flex choice" (click)="item.selected = !item.selected; selectedQuiz.choosen = true">
+                  <div class="multi-choice">
+                    <div class="dot" [ngClass]="{'active' : item.selected == true}"></div>
+                  </div>
+                  <div class="text">
+                    <!-- {{alpha[i]}}. {{item.text}} -->
+                    {{item.text}}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="submit">
+              <button class="primary-btn" [ngClass]="{'disabled' : !selectedQuiz.choosen}"
+                (click)="quizSubmit(selectedQuiz)">Submit</button>
+            </div>
+          </div>
+
+          <div class="text-center">
+            <img src="assets/{{selectedQuiz.image}}" alt="">
+            <div class="customer" *ngIf="selectedQuiz.batch != true">{{selectedQuiz.image_text}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="feedback" *ngIf="selectedQuiz.submitted == true">
+        <div *ngIf="selectedQuiz.correct == true">
+          <div class="flex">
+            <div class="flex-1">
+              <div [innerHTML]="selectedQuiz.feedback.correct"></div>
+              <div class="submit">
+                <button class="primary-btn" (click)="action(step + 1)">Next</button>
+              </div>
+            </div>
+            <div class="text-center">
+              <img src="assets/{{selectedQuiz.correctImage}}" alt="">
+              <div class="customer" *ngIf="selectedQuiz.batch != true && selectedQuiz.correctImage">{{selectedQuiz.image_text}}</div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="selectedQuiz.correct == false">
+          <div class="flex">
+            <div class="flex-1">
+              <div [innerHTML]="selectedQuiz.feedback.incorrect"></div>
+              <div class="submit">
+                <button class="primary-btn" (click)="action(step + 1)">Next</button>
+              </div>
+            </div>
+            <div class="text-center">
+              <img src="assets/{{selectedQuiz.incorrectImage}}" alt="">
+              <div class="customer" *ngIf="selectedQuiz.batch != true && selectedQuiz.incorrectImage">{{selectedQuiz.image_text}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="result" [hidden]="showQuizScreen != 'result'">
+      <div class="result_title">
+        <h2>Order Management In Action</h2>
+      </div>
+      <div class="text-center">
+        <h2>{{result.title}}</h2>
+        <p>{{result.bubble}}</p>
+      </div>
+      
+      <!--<div class="flex">
+        <!- <div class="bubble mr-5">
+          <img src="assets/bubble.png" class="opacity0" alt="">
+          <div class="text">{{result.bubble}}</div>
+        </div> ->
+        <div class="flex flex1">-->
+          <div class="text-center">
+            
+            <h2>Your Score = <span class="primary-color">{{score}} / 1200 </span> </h2>
+            <h3>You earned badges = <span class="primary-color">{{batches}} </span> </h3>
+            <div class="flex fcenter">
+              <div class="batch" *ngFor="let b of counter(batches)">
+                <img src="assets/batches.png" alt="Batches">
+              </div>
+            </div>
+            <div class="text-center">
+              <ng-container>
+                <button *ngIf="this.score < 800" class="primary-btn mr-5" (click)="reload()">Replay</button>
+              </ng-container>
+              <button class="primary-btn" (click)="close()">Exit Window</button>
+            </div>
+          </div>
+        <!-- </div> -->
+      <!-- </div> -->
+    </div>
+  </div>
+</div>
+<!-- </drag-scroll> -->

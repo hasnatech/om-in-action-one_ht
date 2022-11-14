@@ -1,0 +1,106 @@
+$primary : #279989;
+$secondary: #005F86;
+
+.primary-bg {
+  background-color: $primary;
+  color: #fff;
+}
+
+.primary-text {
+  color: $primary;
+}
+
+
+
+
+
+// Small tablets and large smartphones (landscape view)
+$screen-sm-min: 576px;
+
+// Small tablets (portrait view)
+$screen-md-min: 768px;
+
+// Tablets and small desktops
+$screen-lg-min: 992px;
+
+// Large tablets and desktops
+$screen-xl-min: 1200px;
+
+// Small devices
+@mixin sm {
+  @media (max-width: #{$screen-sm-min}) {
+    @content;
+  }
+}
+
+// Medium devices
+@mixin md {
+  @media (max-width: #{$screen-md-min}) {
+    @content;
+  }
+}
+
+// Large devices
+@mixin lg {
+  @media (max-width: #{$screen-lg-min}) {
+    @content;
+  }
+}
+
+// Extra large devices
+@mixin xl {
+  @media (max-width: #{$screen-xl-min}) {
+    @content;
+  }
+}
+
+
+// Extra large devices
+@mixin min($width) {
+  @media (max-width: #{$width}) {
+    @content;
+  }
+}
+
+.flex {
+  display: flex;
+
+  .flex-1 {
+    flex: 1;
+  }
+
+  &.fcenter {
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.show_md {
+  display: none;
+
+  @include md {
+    display: block;
+  }
+}
+
+.hide_md {
+  @include md {
+    display: none;
+  }
+}
+
+.mt-1 {
+  margin-top: -1px;
+}
+
+.margin-tb {
+  margin: 50px 0;
+}
+
+.rel {
+  position: relative;
+}
+
+.abs {
+  position: absolute;
+}
